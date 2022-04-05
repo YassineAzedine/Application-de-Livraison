@@ -1,85 +1,78 @@
-const Food = require("../models/Food")
+const Category = require("../models/Category")
 
-const getFoods = async (req, res) => {
+const getCategories = async (req, res) => {
   try {
-    const foods = await Food.find()
-    res.status(200).json({ success: true, data: foods })
+    const Categorys = await Category.find()
+    res.status(200).json({ success: true, data: Categorys })
   } catch (error) {
     res.status(409).json({ success: false, data: [], error: error })
   }
 }
-const getfood = async (req, res) => {
-  const foodId = req.params.foodId
+const getCategory = async (req, res) => {
+  const categoryId = req.params.categoryId
   try {
-    const food = await Food.find({ _id: foodId })
-    res.status(200).json({ success: true, data: food })
+    const Categorys = await Category.find({ _id: categoryId })
+    res.status(200).json({ success: true, data: Categorys })
   } catch (error) {
     res.status(404).json({ success: false, data: [], error: error })
   }
 }
 
-const creatFood = async (req, res) => {
+const creatCategory = async (req, res) => {
  
   try {
     const name = req.body.name
-    const description = req.body.description
-    const price = req.body.price
-
+ 
   
 
 
-    const newFood = new Food({
+    const newCategory = new Category({
       name: name,
-      description: description,
-      price:price
+  
    
     
 
 
     })
-    if (req.file) {
-      newFood.image_cover = req.file.path
-    }
-    const saveFood = await newFood.save()
-    console.log("🚀 ~ file: FoodsController.js ~ line 44 ~ creatFood ~ saveFood", saveFood)
-    res.status(201).json({ success: true, data: saveFood })
+  
+    const saveCategory = await newCategory.save()
+    console.log("🚀 ~ file: FoodsController.js ~ line 44 ~ creatFood ~ saveFood", saveCategory)
+    res.status(201).json({ success: true, data: saveCategory })
   } catch (error) {
     res.status(404).json({ success: false, data: [], error: error })
   }
 }
 
-const updateFood = async (req, res) => {
-  const foodId = req.params.foodId
+const updateCategory = async (req, res) => {
+  const categoryId = req.params.categoryId
   const { name } = req.body
-  const { description } = req.body
-  const { price } = req.body
+
 
  
 
   try {
-    const updatedfoodData = await Food.updateOne({ _id: foodId }, {
+    const updatedcategoryData = await Category.updateOne({ _id: categoryId }, {
       $set: {
         name: name,
-        description: description,
-        price:price
+       
       }
       
     })
 
   
       
-    res.status(201).json({ success: true, data: updatedfoodData })
+    res.status(201).json({ success: true, data: updatedcategoryData })
   } catch (error) {
     res.status(409).json({ success: false, data: [], error: error })
   }
 }
 
-const deletFood = async (req, res) => {
-  const foodId = req.params.foodId
+const deletcategory = async (req, res) => {
+  const categoryId = req.params.categoryId
   try {
-    await Food.remove({ _id: foodId })
+  const data =   await Category.remove({ _id: categoryId })
 
-    res.status(200).json({ success: true, data: deletFood })
+    res.status(200).json({ success: true, data: data })
   } catch (error) {
     res.status(409).json({ success: false, data: [], error: error })
   }
@@ -92,10 +85,10 @@ const deletFood = async (req, res) => {
 
 
 module.exports = {
-  getFoods,
-  getfood,
-  creatFood,
-  updateFood,
-  deletFood,
+  getCategories,
+  getCategory,
+  creatCategory,
+  updateCategory,
+  deletcategory,
 
 };

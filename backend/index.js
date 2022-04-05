@@ -31,7 +31,14 @@ require('./middlewares/passport')(passport);
 
 //User Router Middleware
 app.use("/api/users",require("./routes/users"));
-app.use("/api/foods",require("./routes/foods"));
+app.use("/api/listusers",require("./routes/listusers"));
+app.use("/api/liverur",require("./routes/livreurs"));
+ app.use("/api/foods",require("./routes/foods"));
+app.use("/api/orders",require("./routes/orders"));
+app.use("/api/categories",require("./routes/categories"));
+
+
+
 
 
 
@@ -56,3 +63,4 @@ try{
 }
 }
 startApp();
+

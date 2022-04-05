@@ -115,6 +115,7 @@ const serializeUser = user =>{
   username : user.username,
   email : user.email,
   name:user.name,
+  history: [],
   _id : user._id,
   updatedAt : user.updatedAt,
   createdAt: user.createdAt,

@@ -7,6 +7,7 @@ const {
 } = require("../controllers/Auth");
 const {
     getFoods,
+    
     getfood,
     creatFood,
     updateFood,
@@ -23,7 +24,7 @@ router.post("/add" , upload.single('image_cover'),  creatFood);
 
 router.get("/",/*userAuth,  checkRole(['admin']),*/ getFoods);
 
-router.get("/:getfood",  getfood);
+router.get("/:foodId",  getfood);
 router.patch("/:foodId", upload.single('image_cover'),  updateFood);
 router.delete("/:foodId",  deletFood);
 

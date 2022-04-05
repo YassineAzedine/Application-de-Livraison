@@ -13,13 +13,16 @@ const FoodSchema = new Schema   (
         price: {
             type: String,
             required: true
-        },
+        },  
         image_cover: {
             type: String,
             required: true
         },
    
-      
+        category: 
+        { 
+            type: Schema.Types.ObjectId, ref:'Category' 
+        },
     },
 
 );

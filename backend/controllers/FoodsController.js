@@ -10,6 +10,7 @@ const getFoods = async (req, res) => {
 }
 const getfood = async (req, res) => {
   const foodId = req.params.foodId
+  console.log("🚀 ~ file: FoodsController.js ~ line 13 ~ getfood ~ foodId", foodId)
   try {
     const food = await Food.find({ _id: foodId })
     res.status(200).json({ success: true, data: food })

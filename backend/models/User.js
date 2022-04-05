@@ -14,6 +14,8 @@ const UserSchema = new Schema (
             default:"user",
             enum:["user","livreur", "admin"]
         },
+        history : [] ,
+        
         username:{
             type:String,
             required:true
