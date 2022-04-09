@@ -22,6 +22,11 @@ const OrderSchema = new Schema   (
             type: Schema.Types.ObjectId, ref:'users' ,
             required: true
         },
+        paidAt : {
+
+            type:Date
+        },
+
 
         liv_id: {
             default:null,
@@ -48,7 +53,12 @@ const OrderSchema = new Schema   (
                 },
                 
             }
-        ]
+        ],
+        createdAt : {
+            type: Date,
+            default: Date.now
+        }
+
         
       
    

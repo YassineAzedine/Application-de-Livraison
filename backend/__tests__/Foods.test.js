@@ -53,4 +53,38 @@
 //         res.status(409).json({ success: false, data: [], error: error })
 //       }
 //  })
-// })
+// })   
+const request = require('supertest')
+const {createServer} = require('../serveurutil/serverutile')
+const {DB, PORT}= require("../config");
+const  mongoose  = require('mongoose');
+const { connect } = require('mongoose');
+const {MongoMemoryServer} = require('mongodb-memory-server');
+const { response } = require('express');
+
+const db = connect('mongodb://localhost:27017/AppDelivery');
+
+const app = createServer()
+
+describe('foods',  () => {
+    jest.setTimeout(10000)
+    beforeAll(async () => {
+        await MongoMemoryServer            
+    });
+  
+
+    test('should return get all foods', async () => {
+
+    await request(app)
+    .get("/api/foods")
+    .expect( 200)
+    .then((response)=>{
+        expect(Array.isArray(response._body.data)).toBeTruthy()
+
+        expect(response._body.length).toEqual()
+    })
+    
+
+    }
+    );
+});

@@ -26,10 +26,13 @@ const getSingleOrderlivr = async (req, res) => {
 
 
 const order_delivery = async (req, res) => {
+  console.log("🚀 ~ file: LivreurController.js ~ line 29 ~ constorder_delivery= ~ req", req)
   const order_id = req.params.orderId;
-  const id_livreur = req.body.liv_id;
+  console.log("🚀 ~ file: LivreurController.js ~ line 30 ~ constorder_delivery= ~ order_id", order_id)
+  const id_livreur = req.user;
+  console.log("🚀 ~ file: LivreurController.js ~ line 32 ~ constorder_delivery= ~ id_livreur", id_livreur)
   const id_order = await Order.find({ _id: order_id });
-  console.log("🚀 ~ file: LivreurController.js ~ line 43 ~ constorder_delivery= ~ id_order", id_order[0].liv_id)
+  console.log("🚀 ~ file: LivreurController.js ~ line 33 ~ constorder_delivery= ~ id_order", id_order)
   if (id_order[0].liv_id === null) {
     try {
       await Order.updateOne(

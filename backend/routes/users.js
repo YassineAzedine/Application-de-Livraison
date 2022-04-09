@@ -35,7 +35,7 @@ router.post('/login-user', async(req,res)=>{
 //Owner User Login Route
 
 router.post('/login-livreur', async(req,res)=>{
-    await userLogin(req.body,"owner-user",res);
+    await userLogin(req.body,"livreur",res);
 
 });
 

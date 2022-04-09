@@ -4,9 +4,10 @@ const exp = require("express");
 const {success,error} = require('consola')
 const {connect} = require("mongoose");
 const passport= require("passport");
-const app  = exp();
+//  
+const {createServer} = require('./serveurutil/serverutile')
 //views
-
+const app = createServer()
 app.use(bp.urlencoded({ extended: false }));
 
 
@@ -30,16 +31,16 @@ require('./middlewares/passport')(passport);
 
 
 //User Router Middleware
-app.use("/api/users",require("./routes/users"));
-app.use("/api/listusers",require("./routes/listusers"));
-app.use("/api/liverur",require("./routes/livreurs"));
- app.use("/api/foods",require("./routes/foods"));
-app.use("/api/orders",require("./routes/orders"));
-app.use("/api/categories",require("./routes/categories"));
+// app.use("/api/users",require("./routes/users"));
+// app.use("/api/listusers",require("./routes/listusers"));
+// app.use("/api/liverur",require("./routes/livreurs"));
+//  app.use("/api/foods",require("./routes/foods"));
+// app.use("/api/orders",require("./routes/orders"));
+// app.use("/api/categories",require("./routes/categories"));
 
 
 
-
+module.exports = {app}
 
 
 const startApp = async ()=>{
@@ -63,4 +64,6 @@ try{
 }
 }
 startApp();
+module.exports = {startApp}
+
 

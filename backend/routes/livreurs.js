@@ -21,7 +21,7 @@ const {
 
 
 router.get("/livreur/:orderId",  getSingleOrderlivr);
-router.post("/livreur/:orderId",  order_delivery);
+router.post("/livreur/:orderId",userAuth,checkRole(['livreur']),  order_delivery);
 router.patch("/livreur/:orderId",  LivreurUpdateOrderStatus);
 
 
