@@ -1,0 +1,4 @@
+- get cart from redux
+- add/cart route to link tag in Header.js
+-add stayling to link
+-add cart route to app.js

@@ -28,11 +28,8 @@ const getSingleOrderlivr = async (req, res) => {
 const order_delivery = async (req, res) => {
   console.log("🚀 ~ file: LivreurController.js ~ line 29 ~ constorder_delivery= ~ req", req)
   const order_id = req.params.orderId;
-  console.log("🚀 ~ file: LivreurController.js ~ line 30 ~ constorder_delivery= ~ order_id", order_id)
   const id_livreur = req.user;
-  console.log("🚀 ~ file: LivreurController.js ~ line 32 ~ constorder_delivery= ~ id_livreur", id_livreur)
   const id_order = await Order.find({ _id: order_id });
-  console.log("🚀 ~ file: LivreurController.js ~ line 33 ~ constorder_delivery= ~ id_order", id_order)
   if (id_order[0].liv_id === null) {
     try {
       await Order.updateOne(
@@ -44,7 +41,7 @@ const order_delivery = async (req, res) => {
         }
       );
 
-      res.status(200).json({ success: true, data: id_order });
+      res.status(200).json({ success: true, data: id_order , message:"Order Accepted"});
     } catch (error) {
       console.log(error);
       res.status(404).json({ success: false, data: [], error: error });
@@ -59,7 +56,13 @@ const order_delivery = async (req, res) => {
       });
   }
 };
+const getstatus = (req,res)=>{
+ 
+  res.json({ status:Order.schema.path('status').enumValues})
+
+}
 const LivreurUpdateOrderStatus = async (req,res) =>{
+
   try{
     const orderId = req.params.orderId
     // const { status } = req.body.status
@@ -67,12 +70,13 @@ const LivreurUpdateOrderStatus = async (req,res) =>{
 
     const updateOrderStatus = await Order.updateOne({ _id: orderId }, {
       $set: {
+
         status:status
+        
       }
   
       
     })
-    console.log("🚀 ~ file: OrdersController.js ~ line 114 ~ updateOrderStatus ~ updateOrderStatus", updateOrderStatus)
   res.status(201).json({ success: true, data: updateOrderStatus })
   
   }catch{
@@ -85,9 +89,11 @@ const LivreurUpdateOrderStatus = async (req,res) =>{
 }
 
 
+
 module.exports = {
   getSingleOrderlivr,
   order_delivery,
   LivreurUpdateOrderStatus,
+  getstatus,
 
 };

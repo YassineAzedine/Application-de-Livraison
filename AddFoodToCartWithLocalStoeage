@@ -1,0 +1,7 @@
+  - add constant 
+  - add reducer
+  - combine reducer in store
+  -create action function and dispatch 
+  reducer within it
+  - add onclick handlertocart to 'Add to Cart' in food & card componant
+  -add handlerAddcart methode to food & crd componant 

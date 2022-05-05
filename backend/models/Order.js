@@ -20,7 +20,7 @@ const OrderSchema = new Schema   (
         },
         user_id: {
             type: Schema.Types.ObjectId, ref:'users' ,
-            required: true
+            required: false
         },
         paidAt : {
 
@@ -39,7 +39,7 @@ const OrderSchema = new Schema   (
                     type: String,
                     required:true
                 },
-                qty : {
+                count : {
                     type: Number,
                     required:true
                 },

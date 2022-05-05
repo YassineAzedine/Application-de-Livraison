@@ -69,7 +69,7 @@ const app = createServer()
 describe('foods',  () => {
     jest.setTimeout(10000)
     beforeAll(async () => {
-        await MongoMemoryServer            
+        await mongoose            
     });
   
 
@@ -81,10 +81,15 @@ describe('foods',  () => {
     .then((response)=>{
         expect(Array.isArray(response._body.data)).toBeTruthy()
 
-        expect(response._body.length).toEqual()
+        // expect(response._body.length).toEqual()
     })
     
 
     }
+
     );
+
+
+
+    
 });

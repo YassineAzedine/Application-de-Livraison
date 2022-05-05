@@ -2,6 +2,9 @@ const User = require("../models/User");
 const {findOneAndUpdate} = require("../models/User")
 
 exports.addProductToHistory = (req,res,next)=>{
+console.log("🚀 ~ file: user.js ~ line 5 ~ req", req.user._id)
+console.log("🚀 ~ file: user.js ~ line 5 ~ req", req.body)
+
     let history = [];
 
    history = req.body.orderItems.map(orderItem=>{
@@ -18,8 +21,9 @@ exports.addProductToHistory = (req,res,next)=>{
 
     })
     if(history.length){
+
       
-        User.findOneAndUpdate({_id:req.body.user_id},
+        User.findOneAndUpdate({_id:req.user._id},
             {$push:{history: history}},
             {new:true},
             (err,data)=>{

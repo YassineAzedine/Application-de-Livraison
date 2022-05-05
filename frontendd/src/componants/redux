@@ -1,0 +1,6 @@
+redux state management 
+wast store : kikono fih les action reducer et les state
+action : excuter une methode qui fait traitment ajoute matalan 
+action declencher un reducer et reducer qui modifiifer 3la state
+
+action comminique avec le reducer

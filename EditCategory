@@ -1,0 +1,18 @@
+- replace button for link 
+- add router for new componant 
+- create AdminEditFood 
+- test 
+- setup AdminEditComponent componant
+- import AdminHeader
+- extract foodid via url 
+################################
+-setup componant state for food
+-create redux constant
+ reducer & action for getFood(foodid)
+ dispatch getFood(foodID) within useEffect
+ -create backend 
+ -destructure food from redux state 
+ - set condition in useffect to first check if food exist  : if 
+ not call getfood action , else that means food exist in redux  store se we can find 
+ - change condition in adminbody componant to first  check if food exist before mapping 
+ othere wise error occure (foods && foods.map())

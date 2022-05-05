@@ -1,30 +1,44 @@
 const Food = require("../models/Food")
+const Category = require("../models/Category")
 
+const APIFeatures = require('../utils/apiFeatures')
 const getFoods = async (req, res) => {
+console.log("🚀 ~ file: FoodsController.js ~ line 6 ~ getFoods ~ req", req.query)
+
   try {
-    const foods = await Food.find()
-    res.status(200).json({ success: true, data: foods })
+    const apiFeatures = new APIFeatures(Food.find().populate('category'),req.query)
+    .filter()
+    
+        const foods = await apiFeatures.query;
+  
+    res.status(200).json({ success: true,  foods })
   } catch (error) {
     res.status(409).json({ success: false, data: [], error: error })
   }
 }
 const getfood = async (req, res) => {
   const foodId = req.params.foodId
+
   console.log("🚀 ~ file: FoodsController.js ~ line 13 ~ getfood ~ foodId", foodId)
   try {
-    const food = await Food.find({ _id: foodId })
-    res.status(200).json({ success: true, data: food })
+    const food = await Food.findById({ _id: foodId })
+    res.status(200).json({ success: true,  food })
   } catch (error) {
     res.status(404).json({ success: false, data: [], error: error })
   }
 }
 
 const creatFood = async (req, res) => {
+console.log("🚀 ~ file: FoodsController.js ~ line 32 ~ creatFood ~ req", req.file)
+console.log("🚀 ~ file: FoodsController.js ~ line 32 ~ creatFood ~ req", req.body)
+
  
   try {
     const name = req.body.name
     const description = req.body.description
     const price = req.body.price
+    const category = req.body.category
+
 
   
 
@@ -32,14 +46,18 @@ const creatFood = async (req, res) => {
     const newFood = new Food({
       name: name,
       description: description,
-      price:price
+      price:price,
+      category:category
+
+      
    
     
 
 
     })
+  
     if (req.file) {
-      newFood.image_cover = req.file.path
+      newFood.image_cover = req.file.originalname
     }
     const saveFood = await newFood.save()
     console.log("🚀 ~ file: FoodsController.js ~ line 44 ~ creatFood ~ saveFood", saveFood)
@@ -50,6 +68,7 @@ const creatFood = async (req, res) => {
 }
 
 const updateFood = async (req, res) => {
+console.log("🚀 ~ file: FoodsController.js ~ line 71 ~ updateFood ~ req", req.body)
   const foodId = req.params.foodId
   const { name } = req.body
   const { description } = req.body
@@ -65,7 +84,9 @@ const updateFood = async (req, res) => {
         price:price
       }
       
+      
     })
+    
 
   
       

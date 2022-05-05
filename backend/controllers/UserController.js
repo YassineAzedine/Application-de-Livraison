@@ -3,7 +3,7 @@ const User = require("../models/User")
 const getUsers = async (req, res, role) => {
   try {
     const users = await User.find({role:role})
-    res.status(200).json({ success: true, data: users })
+    res.status(200).json({ success: true,  users })
   } catch (error) {
     res.status(409).json({ success: false, data: [], error: error })
   }

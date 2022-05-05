@@ -1,0 +1,5 @@
+- constant
+- reducer
+- action
+- add reducer to store
+- add createCategory 

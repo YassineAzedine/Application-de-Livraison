@@ -2,8 +2,8 @@ const Category = require("../models/Category")
 
 const getCategories = async (req, res) => {
   try {
-    const Categorys = await Category.find()
-    res.status(200).json({ success: true, data: Categorys })
+    const category = await Category.find()
+    res.status(200).json({ success: true, category })
   } catch (error) {
     res.status(409).json({ success: false, data: [], error: error })
   }
@@ -11,8 +11,8 @@ const getCategories = async (req, res) => {
 const getCategory = async (req, res) => {
   const categoryId = req.params.categoryId
   try {
-    const Categorys = await Category.find({ _id: categoryId })
-    res.status(200).json({ success: true, data: Categorys })
+    const category = await Category.findById({ _id: categoryId })
+    res.status(200).json({ success: true,  category })
   } catch (error) {
     res.status(404).json({ success: false, data: [], error: error })
   }
@@ -37,13 +37,14 @@ const creatCategory = async (req, res) => {
   
     const saveCategory = await newCategory.save()
     console.log("🚀 ~ file: FoodsController.js ~ line 44 ~ creatFood ~ saveFood", saveCategory)
-    res.status(201).json({ success: true, data: saveCategory })
+    res.status(201).json({ success: true, category: saveCategory })
   } catch (error) {
     res.status(404).json({ success: false, data: [], error: error })
   }
 }
 
 const updateCategory = async (req, res) => {
+console.log("🚀 ~ file: CategoriesController.js ~ line 47 ~ updateCategory ~ req", req.body)
   const categoryId = req.params.categoryId
   const { name } = req.body
 

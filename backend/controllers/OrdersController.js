@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+
 const nodemailer = require("nodemailer");
 
 const createOrder =  (req, res) => {
@@ -13,10 +14,10 @@ const createOrder =  (req, res) => {
     let total = 0
     orderItems.forEach(orderItme =>{
 
-        total += orderItme.price * orderItme.qty
+        total += orderItme.price * orderItme.count
 
       })
-    const newOrder = new Order({
+    const  newOrder =  new Order({
         address: address,
           total : total,
         user_id: req.user ,
@@ -30,7 +31,7 @@ const createOrder =  (req, res) => {
 
   
     const saveOrder =  newOrder.save()
-    res.status(201).json({ success: true, order: saveOrder  })
+    res.status(201).json({ success: true, order: saveOrder , message:"Please check you email" })
   } catch (error) {
     res.status(404).json({ success: false, data: [], error: error })
   }
@@ -65,7 +66,7 @@ const getorders = async (req, res) => {
 
     
     try {
-      const orders = await Order.find()
+      const orders = await Order.find().populate('user_id').populate('liv_id')
       
    
       res.status(200).json({success: true , order: orders})
@@ -76,7 +77,8 @@ const getorders = async (req, res) => {
   const allOrders = async (req, res) => {
       
     try {
-      const orders = await Order.find()
+      const orders = await Order.find().populate('user_id').populate('liv_id')
+    
 
          let totalAmount = 0
       orders.forEach(order =>{
@@ -102,10 +104,11 @@ return res.status(200).json({
   })
 };
 const getSingleOrderAdmin = async (req, res) => {
-    
+    const id = req.params.orderId
+    console.log("🚀 ~ file: OrdersController.js ~ line 106 ~ getSingleOrderAdmin ~ id", id)
   // let food = order.orderItems[0].food
   // create a new booking
-  const order = await Order.findById(req.params.id).populate('user_id')
+  const oneorder = await Order.findById(id).populate('user_id')
   .populate('orderItems.food').populate('liv_id')
 
 
@@ -113,17 +116,18 @@ const getSingleOrderAdmin = async (req, res) => {
 
      success:true,
 
-     order
+     oneorder
 
 
 
    })
-
+     console.log("🚀 ~ file: OrdersController.js ~ line 121 ~ res.status ~ order", oneorder)
 
   
 
 };
 const AdminUpdateOrderStatus = async (req,res) =>{
+console.log("🚀 ~ file: OrdersController.js ~ line 130 ~ AdminUpdateOrderStatus ~ req", req)
   try{
     const orderId = req.params.orderId
     // const { status } = req.body.status
@@ -136,8 +140,7 @@ const AdminUpdateOrderStatus = async (req,res) =>{
   
       
     })
-    console.log("🚀 ~ file: OrdersController.js ~ line 114 ~ updateOrderStatus ~ updateOrderStatus", updateOrderStatus)
-  res.status(201).json({ success: true, data: updateOrderStatus })
+  res.status(201).json({ success: true, status })
   
   }catch{
     res.status(404).json({success: false , data: [], error: error})
@@ -147,14 +150,51 @@ const AdminUpdateOrderStatus = async (req,res) =>{
 
 
 }
+
+
+const getstatus = (req,res)=>{
+ const stt = Order.schema.path('status').enumValues
+  res.json({ status:stt})
+   
+  if(stt[0] ==="new"){
+console.log('hello');
+  }
+}
+
+const updatestatus = (req,res)=>{
+
+  Order.update(
+    
+
+    {
+      $set : {status:req.body.status}
+    },
+
+   (err,data) => {
+     if(err){
+       return res.status(404)
+     }
+     res.json(data)
+     console.log("🚀 ~ file: OrdersController.js ~ line 169 ~ updatestatus ~ data", data)
+   }
+  )
+}
+
+
+
+
 const sendEmail = async (req, res) => {
+console.log("🚀 ~ file: OrdersController.js ~ line 187 ~ sendEmail ~ req", req)
+  
   const orderItems = req.body.orderItems
   let total = 0
+ 
   orderItems.forEach(orderItme =>{
 
-      total += orderItme.price * orderItme.qty
+      total += orderItme.price * orderItme.count
 
     })
+    
 
 const email = req.user.email
 const name = req.user.name
@@ -174,7 +214,7 @@ const name = req.user.name
       to: email, // list of receivers
       subject: "Hello ✔", // Subject line
       text: " jjejejeje", // plain text body
-      html: "<b>Monsieur "+ name + "Suit  avotre achat  nous vous addressons,ci-joint une facture d'un montant de :<strong> "  + total + " </strong> dh En vous remerciant par avance </b>",
+      html: "<b>Monsieur  " + name +  "  Suit  a votre achat  nous vous addressons,ci-joint une facture d'un montant de :<strong> "  + total + " </strong> dh En vous remerciant par avance </b>",
 
   };
   
@@ -204,6 +244,8 @@ module.exports = {
     AdminUpdateOrderStatus,
     allOrders,
     deleteorder,
-    sendEmail
+    sendEmail,
+    getstatus,
+    updatestatus
 
     };

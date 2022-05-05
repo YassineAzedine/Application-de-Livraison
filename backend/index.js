@@ -4,6 +4,12 @@ const exp = require("express");
 const {success,error} = require('consola')
 const {connect} = require("mongoose");
 const passport= require("passport");
+const morgan= require("morgan");
+const expressValidator = require('express-validator')
+
+
+//
+
 //  
 const {createServer} = require('./serveurutil/serverutile')
 //views
@@ -29,14 +35,13 @@ app.use(passport.initialize());
 require('./middlewares/passport')(passport);
 
 
-
-//User Router Middleware
-// app.use("/api/users",require("./routes/users"));
-// app.use("/api/listusers",require("./routes/listusers"));
-// app.use("/api/liverur",require("./routes/livreurs"));
-//  app.use("/api/foods",require("./routes/foods"));
-// app.use("/api/orders",require("./routes/orders"));
-// app.use("/api/categories",require("./routes/categories"));
+// User Router Middleware
+app.use("/api/users",require("./routes/users"));
+app.use("/api/listusers",require("./routes/listusers"));
+app.use("/api/liverur",require("./routes/livreurs"));
+ app.use("/api/foods",require("./routes/foods"));
+app.use("/api/orders",require("./routes/orders"));
+app.use("/api/categories",require("./routes/categories"));
 
 
 
@@ -49,6 +54,7 @@ try{
     await connect(DB,{
        
         useNewUrlParser: true
+        
       })
       success({message: `Successfully connected with the Database \n${DB}`,
       badge : true} ); 

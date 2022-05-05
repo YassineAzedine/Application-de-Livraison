@@ -11,7 +11,7 @@ const FoodSchema = new Schema   (
             required: false
         },
         price: {
-            type: String,
+            type: Number,
             required: true
         },  
         image_cover: {
@@ -20,8 +20,19 @@ const FoodSchema = new Schema   (
         },
    
         category: 
+
         { 
-            type: Schema.Types.ObjectId, ref:'Category' 
+            type: String,
+             required : [true, 'Please select catrgory for this food'],
+
+            enum:{
+             values: ["Takos","Pizza","Plats","Desserts" , ]
+
+            }
+            
+            
+
+            // type: Schema.Types.ObjectId, ref:'Category' 
         },
     },
 

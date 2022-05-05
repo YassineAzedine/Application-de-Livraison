@@ -1,0 +1,18 @@
+
+export  const ALL_FOODS_REQUEST = 'ALL_FOODS_REQUEST'
+export const ONE_FOOD = 'ONE_FOOD'; 
+
+
+export  const  ALL_FOODS_SUCCESS = 'ALL_FOODS_SUCCESS'
+export  const ALL_FOODS_FAIL = 'ALL_FOODS_FAIL'
+export  const DETAILS_FOODS_REQUEST = 'DETAILS_FOODS_REQUEST'
+export  const  DETAILS_FOODS_SUCCESS = 'DETAILS_FOODS_SUCCESS'
+export  const DETAILS_FOODS_FAIL = 'DETAILS_FOODS_FAIL'
+export  const CLEAR_ERRORS = 'CLEAR_ERRORS'
+//Add Food
+export const ADD_FOOD = 'ADD_FOOD'; 
+
+
+export const DELETE_FOOD = 'DELETE_FOOD'; 
+
+

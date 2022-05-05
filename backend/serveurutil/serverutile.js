@@ -10,7 +10,13 @@ const {DB, PORT}= require("../config");
 app.use(cors());
 app.use(bp.json());
 app.use(passport.initialize());
+app.use(exp.json());
+const morgan= require("morgan");
+const expressValidator = require('express-validator')
+app.use(expressValidator())
+    
 
+app.use(morgan('tiny'));
 const createServer = () =>{
     app.use("/api/users", require("../routes/users"));
     app.use("/api/listusers",require("../routes/listusers"));

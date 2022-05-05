@@ -1,0 +1,4 @@
+- get cart from redux store
+- add/cart route to Link tag in Header.js
+- add styling to link
+- add cart route to App.js

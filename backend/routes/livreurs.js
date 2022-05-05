@@ -10,7 +10,7 @@ const {
 
     getSingleOrderlivr,
 
-
+    getstatus,
     order_delivery,
     LivreurUpdateOrderStatus,
 
@@ -18,7 +18,9 @@ const {
 
 } = require("../controllers/LivreurController");
 
-
+router.get('/livreur/stt', async(req,res)=>{
+  await   getstatus(req,res);   
+});
 
 router.get("/livreur/:orderId",  getSingleOrderlivr);
 router.post("/livreur/:orderId",userAuth,checkRole(['livreur']),  order_delivery);
