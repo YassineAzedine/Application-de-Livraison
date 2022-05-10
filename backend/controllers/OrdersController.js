@@ -2,6 +2,7 @@ const Order = require('../models/Order');
 
 const nodemailer = require("nodemailer");
 
+
 const createOrder =  (req, res) => {
   try {
  
@@ -31,6 +32,7 @@ const createOrder =  (req, res) => {
 
   
     const saveOrder =  newOrder.save()
+    console.log("🚀 ~ file: OrdersController.js ~ line 35 ~ createOrder ~ saveOrder", saveOrder)
     res.status(201).json({ success: true, order: saveOrder , message:"Please check you email" })
   } catch (error) {
     res.status(404).json({ success: false, data: [], error: error })
@@ -39,6 +41,7 @@ const createOrder =  (req, res) => {
 
 
 const getSingleOrder = async (req, res) => {
+console.log("🚀 ~ file: OrdersController.js ~ line 43 ~ getSingleOrder ~ req", req)
     
   // let food = order.orderItems[0].food
   // create a new booking
@@ -104,7 +107,8 @@ return res.status(200).json({
   })
 };
 const getSingleOrderAdmin = async (req, res) => {
-    const id = req.params.orderId
+console.log("🚀 ~ file: OrdersController.js ~ line 108 ~ getSingleOrderAdmin ~ req", req)
+    const id = req.params.id
     console.log("🚀 ~ file: OrdersController.js ~ line 106 ~ getSingleOrderAdmin ~ id", id)
   // let food = order.orderItems[0].food
   // create a new booking
@@ -126,27 +130,57 @@ const getSingleOrderAdmin = async (req, res) => {
   
 
 };
-const AdminUpdateOrderStatus = async (req,res) =>{
-console.log("🚀 ~ file: OrdersController.js ~ line 130 ~ AdminUpdateOrderStatus ~ req", req)
+const AdminUpdateOrderStatuss =  (req,res) =>{
+console.log("🚀 ~ file: OrdersController.js ~ line 133 ~ AdminUpdateOrderStatuss ~ req", req.body)
+
+  Order.update(
+    { _id : req.params.orderId},
+    {
+      $set:{status:req.body.status}
+    },
+
+    (err,data)=> {
+    if(err){
+      return res.status(400).json({error:err.message})
+    }
+    res.json(data)
+  }
+
+  )
+}
+
+const AdminUpdateOrderStatus =  (req,res) =>{
+console.log("🚀 ~ file: OrdersController.js ~ line 133 ~ AdminUpdateOrderStatus ~ req", req.params)
+if( req.params.orderId == 'undefined'){
+  console.log('undifened value')
+
+}else{
   try{
     const orderId = req.params.orderId
+    console.log("🚀 ~ file: OrdersController.js ~ line 140 ~ AdminUpdateOrderStatus ~ orderId", orderId)
     // const { status } = req.body.status
     const { status } = req.body
+    console.log("🚀 ~ file: OrdersController.js ~ line 142 ~ AdminUpdateOrderStatus ~ status", status)
 
-    const updateOrderStatus = await Order.updateOne({ _id: orderId }, {
+    Order.updateOne({ _id: orderId }, {
       $set: {
         status:status
       }
   
       
     })
+    console.log("🚀 ~ file: OrdersController.js ~ line 152 ~ AdminUpdateOrderStatus ~ updateOrderStatus", updateOrderStatus)
+    
   res.status(201).json({ success: true, status })
   
   }catch{
-    res.status(404).json({success: false , data: [], error: error})
+    res.status(409).json({ success: false, data: [], error: error })
+
   }
   
 
+}
+  
 
 
 }
@@ -242,6 +276,7 @@ module.exports = {
     getSingleOrderAdmin,
     getorders,
     AdminUpdateOrderStatus,
+    AdminUpdateOrderStatuss,
     allOrders,
     deleteorder,
     sendEmail,

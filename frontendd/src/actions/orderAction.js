@@ -17,14 +17,14 @@ console.log('this is error');
     }
 }
 export const getOneorder =  (orderid) => async dispatch=>{
+console.log("🚀 ~ file: orderAction.js ~ line 20 ~ orderid", orderid)
    
     try{
- 
+        
         const response = await axios.get('http://localhost:5000/api/orders/admin/allOrders/'+orderid);
        
 
         const order = response.data.oneorder
-        console.log("🚀 ~ file: orderAction.js ~ line 27 ~ order", order)
       
   dispatch({type:GET_ONE_ORDER , payload:order})
 
@@ -39,7 +39,6 @@ export const deleteOrder = (orderID) => async dispatch=>{
         
  
         const response = await axios.delete('http://localhost:5000/api/orders/'+ orderID);
-        console.log("🚀 ~ file: categoryAction.js ~ line 9 ~ responsecategory", response)
        
   dispatch({type:DELETE_ORDER,payload:response})
 

@@ -18,6 +18,7 @@ const {
     allOrders,
     deleteorder,
     AdminUpdateOrderStatus,
+    AdminUpdateOrderStatuss,
     sendEmail,
     updatestatus
   } = require("../controllers/OrdersController");
@@ -55,22 +56,23 @@ router.delete('/:id', async(req,res)=>{
 router.get('/admin/allOrders', async(req,res)=>{
   await   allOrders(req,res);   
 });
-router.get('/admin/allOrders/:orderId', async(req,res)=>{
+router.get('/admin/allOrders/:id', async(req,res)=>{
   await   getSingleOrderAdmin(req,res);   
 });
 
 
-router.patch('/admin/order/:orderId',async(req,res)=>{
-  await   AdminUpdateOrderStatus(req,res);
+router.patch('/admin/order/list/:orderId',async(req,res)=>{
+  await   AdminUpdateOrderStatuss(req,res);
 });
 
 
+    
 router.get('/admin/stt', async(req,res)=>{  
   await   getstatus(req,res);   
 });
-router.patch('/admin/stt/:orderId', async(req,res)=>{  
-  await   updatestatus(req,res);   
-});
+// router.patch('/admin/stt/:orderId', async(req,res)=>{  
+//   await   updatestatus(req,res);   
+// });
 
 router.get('/livreur/stt',  async(req,res)=>{
   await   getstatus(req,res);   

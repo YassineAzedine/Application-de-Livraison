@@ -1,303 +1,340 @@
-import React,{useEffect,useState} from 'react'
-import {Link} from"react-router-dom";
-
-import {useDispatch, useSelector,} from 'react-redux'
-import { getorders ,deleteOrder} from '../actions/orderAction'
+import React, { useEffect, useState } from 'react'
+import { Link } from "react-router-dom";
+import moment from 'moment'
+import { useDispatch, useSelector, } from 'react-redux'
+import { getorders, deleteOrder } from '../actions/orderAction'
+import GetOneOrderbyAdmin from './GetOneOrderbyAdmin.js';
 import axios from 'axios';
 
 function AdminOrder() {
 
-      const [statuss , setStatus] = useState([]);
-      const initialRommState = {
-        status: "",
+  const [statuss, setStatus] = useState([]);
+  const initialRommState = {
+    status: "",
+
+  };
+  const [updatestatus, setupdataStatus] = useState(initialRommState);
+  console.log("🚀 ~ file: AdminOrder.js ~ line 11 ~ AdminOrder ~ xsxus", updatestatus.status)
+
      
-      };
-      const [updatestatus , setupdataStatus] = useState(initialRommState);
-      console.log("🚀 ~ file: AdminOrder.js ~ line 11 ~ AdminOrder ~ xsxus", updatestatus.status)
-     
-    
-      const handleDelete = (orderID) => {
-    
-        dispatch(deleteOrder(orderID));
-        window.location="/adminorder";
-    
-      
-     
-      
-      };
-      
-      
+ 
 
 
-      const getstatus = ()=>{
-        axios.get(`http://localhost:5000/api/orders/admin/stt`).
-        then((res)=>{
-         let statuss =  res.data.status
-         setStatus(statuss)
-   
-        })
-     
-        
-      }
-      const updateorderstatus = async  (orderId )=>{
-      let data =   updatestatus.status
-      await  axios.patch(`http://localhost:5000/api/orders/admin/order/${orderId}`,{
-        status : updatestatus.status
-        })
-       .then((res)=>{
-             console.log("🚀 ~ file: AdminOrder.js ~ line 33 ~ then ~ data", res.data.status)
-             return res.status
-   
-        })
-     
-        
-      }
-      const handelstatus = (e,order)=>{
-        const status = {...updatestatus}
- status[e.target.name] = e.target.value
-        const orderId = order._id
-        
-        setupdataStatus(status)
+  const handleDelete = (orderID) => {
 
-        updateorderstatus(orderId);
+    dispatch(deleteOrder(orderID));
+    window.location = "/adminorder";
 
-      }
 
-      const showStatus=(order)=>{
-        
-  return (
-    <>
+
+
+  };
+
+
+
+
+  const getstatus = () => {
+    axios.get(`http://localhost:5000/api/orders/admin/stt`).
+      then((res) => {
+        let statuss = res.data.status
+        setStatus(statuss)
+
+      })
+
+
+  }
+ 
+
   
+  const handelstatus = (e, order) => {
+    const status = { ...updatestatus }
+    status[e.target.name] = e.target.value
+    const orderId = order._id
+    if(orderId){
+      updateorderstatus(orderId);
+    }else{
+      console.log('no id');
+    }
+    setupdataStatus(status)
 
-       
     
-      <select onChange={e=>handelstatus(e,order)}  name="status" id="">
-    
-    
-        <option value="" selected>select status</option>
-       
-      {statuss.map((s)=>(
-        <option key={s} value={s}>{s}</option>
-        ))}
-      </select>
-           
-  
-    
-    </>
-  )
-   
+
+  }
+    const updateorderstatus =  (orderId) => {
+    console.log("🚀 ~ file: AdminOrder.js ~ line 64 ~ updateorderstatus ~ orderId", orderId)
+
+    let data = updatestatus.status
+    if(orderId !=='undefined') {
+    console.log("🚀 ~ file: AdminOrder.js ~ line 67 ~ updateorderstatus ~ orderId", orderId)
+   console.log('yes');
+      axios.patch(`http://localhost:5000/api/orders/admin/order/list/${orderId}`, {
      
-      }
-      
-      const showProduct=(order,id )=>{
-    
-        
-        return (
-          <>
+        status: updatestatus.status
+      })
+        .then((res) => {
+          console.log("🚀 ~ file: AdminOrder.js ~ line 33 ~ then ~ data", res.data.status)
+          return res.status
+  
+        })
+    }else{
+      console.log('no id');
+    }
+   
+
+
+
+  }
+
+  const showStatus = (order) => {
+
+    return (
+      <>
+
+
+
+
+        <select onChange={e => handelstatus(e, order)} name="status" id="">
+
+
+          <option value="" selected>select status</option>
+
+          {statuss.map((s) => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
+
+
+
+      </>
+    )
+
+
+  }
+
+  const showProduct = (order, id) => {
+
+
+    return (
+      <>
         <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
-        {order.orderItems.map((items)=>(
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">  
-             
-       
-    
-           
-              <h5 className="modal-title" id="exampleModalLabel"></h5>
-              <h1> {items.name}
-              <h3>Price : {items.price} DH</h3>
-              <h4> Qty :{items.count}</h4>
-         <td > <img   style={{"height" : "80px", "width" : "140px"}} src={"https://www.docteurclic.com/galerie-photos/image_3328_400.jpg"} alt="BigCo Inc. logo"/></td>
+          {order.orderItems.map((items) => (
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
 
-              </h1>
-          
-         
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+
+
+
+                  <h5 className="modal-title" id="exampleModalLabel"></h5>
+                  <h1> {items.name}
+                    <h3>Price : {items.price} DH</h3>
+                    <h4> Qty :{items.count}</h4>
+                    <td > <img style={{ "height": "80px", "width": "140px" }} src={"https://www.docteurclic.com/galerie-photos/image_3328_400.jpg"} alt="BigCo Inc. logo" /></td>
+
+                  </h1>
+
+
+                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+                </div>
+                <div className="modal-body">
+
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" className="btn btn-primary">Save changes</button>
+                </div>
+              </div>
             </div>
-            <div className="modal-body">
-           
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary">Save changes</button>
-            </div>
-          </div>
+          ))}
         </div>
-              ))}
-      </div>
-      
-             
-     
-            
-          
-         
-      
-                 
-        
-          
-          </>
-        )
-         
-           
-            }
 
-  const signout =  () =>{
-    const jwt =  localStorage.removeItem('token');
-   
-    window.location="/";
+
+
+
+
+
+
+
+
+
+      </>
+    )
+
+
+  }
+
+  const signout = () => {
+    const jwt = localStorage.removeItem('token');
+
+    window.location = "/";
     return jwt;
-  
-  
+
+
   }
   const dispatch = useDispatch();
-  const {loading, orders , error} = useSelector(state=>state.orders)
-  useEffect (()=>{
-    getstatus();
- 
-      
+  const { loading, orders, error } = useSelector(state => state.orders)
+  console.log("🚀 ~ file: AdminOrder.js ~ line 156 ~ AdminOrder ~ orders", orders)
+  useEffect(() => {
+  
+
+
     // axios.get('http://localhost:5000/api/categories').then((res)=>{
     //  const data = res.data.data
     //     setcategries(data)
     //         })
 
 
-  dispatch(getorders())
+    dispatch(getorders())
+    getstatus();
 
-} , [dispatch,orders])
+  
+
+    
+  }, [dispatch,])
 
   return (
     <div>
 
-<div>
+      <div>
 
-{/* //dashboard DashboradAdmin */}
+        {/* //dashboard DashboradAdmin */}
 
-  <div>
-        <input type="checkbox" id="nav-toggle" />
-        <div className="sidebar bg-warning">
-          <div className="sidebar-brand">
-            <h2>
-              <span className="las la-store" /> <span>MARHBA </span> 
-              <span className="la la-cutlery" />
-            
-            </h2>
-          </div>
-          {/*Secciones-del-tablero*/}
-          <div className="sidebar-menu">
-            <ul>
-              <li>
-               
-              <Link to={'/dashboardadmin'} className="active"><span className="las la-home" />
-                      <span>
-                        </span></Link>
+        <div>
+          <input type="checkbox" id="nav-toggle" />
+          <div className="sidebar bg-warning">
+            <div className="sidebar-brand">
+              <h2>
+                <span className="las la-store" /> <span>MARHBA </span>
+                <span className="la la-cutlery" />
 
-              </li>
-              <li>
-                
-            
+              </h2>
+            </div>
+            {/*Secciones-del-tablero*/}
+            <div className="sidebar-menu">
+              <ul>
+                <li>
+
+                  <Link to={'/dashboardadmin'} className="active"><span className="las la-home" />
+                    <span>
+                    </span></Link>
+
+                </li>
+                <li>
+
+
                   <Link to={'/admincategory'}>
-                  <span className="la la-list-alt " />
+                    <span className="la la-list-alt " />
                     <span>Categorie</span>
-                  
-               
+
+
                   </Link>
 
-              </li>
-              <li>
-                <Link to={'/adminfood'} className="la la-cutlery" >
-                  <span>Foods</span>
+                </li>
+                <li>
+                  <Link to={'/adminfood'} className="la la-cutlery" >
+                    <span>Foods</span>
                   </Link>
-              </li>
-              <li>
-              <Link to={'/adminlistuser'} className="las la-user" >
-                  <span>users</span>
+                </li>
+                <li>
+                  <Link to={'/adminlistuser'} className="las la-user" >
+                    <span>users</span>
                   </Link>
 
-              </li>
-              <li>
-               <Link to={'/adminorder'} className="la la-cart-arrow-down" >
-                  <span>Commande</span>
+                </li>
+                <li>
+                  <Link to={'/adminorder'} className="la la-cart-arrow-down" >
+                    <span>Commande</span>
                   </Link>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <div className="main-content">
-          <header>
-            <h2>
-              <label htmlFor="nav-toggle">
-                <span className="las la-bars" />
-              </label> Marhba
-              <span className="la la-cutlery" />
-            </h2>
-            {/* <div className="search-wrapper">
+          <div className="main-content">
+            <header>
+              <h2>
+                <label htmlFor="nav-toggle">
+                  <span className="las la-bars" />
+                </label> Marhba
+                <span className="la la-cutlery" />
+              </h2>
+              {/* <div className="search-wrapper">
               <span className="las la-search" />
               <input type="search" placeholder="Buscar aquí" />
             </div> */}
-            <div className="user-wrapper">
-              <img src="img/Avatar.png" width="40px" height="40px" alt="" />
-              <div>
-                <h4>Admin</h4>
-                
-                <small>   <span className="nav-link" style={{cursor:'pointer'}}  onClick={signout} > Logout </span> </small>
+              <div className="user-wrapper">
+                <img src="img/Avatar.png" width="40px" height="40px" alt="" />
+                <div>
+                  <h4>Admin</h4>
+
+                  <small>   <span className="nav-link" style={{ cursor: 'pointer' }} onClick={signout} > Logout </span> </small>
+                </div>
               </div>
-            </div>
-          </header>
+            </header>
         
-          <main>
-           
-                <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">address</th>
-      <th scope="col">Total</th>
-      <th scope="col">user</th>
-      <th scope="col">Livreur</th>
+            <main>
+            <div>
+           <th scope="col">Status de chaque commande : <strong className='text-danger'>{updatestatus.status} </strong></th>
+           </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">address</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">user</th>
+                    <th scope="col">Livreur</th>
+                    <th scope="col">status</th>
 
-      <th scope="col">Status </th>
-      <th scope="col">Product </th>
 
-  
+                    <th scope="col">la list des repas </th>
+                  
+                    <th scope="col text-center">Orderd On </th>
 
-     
-     
 
-    </tr>
-  </thead>
-  <tbody>
 
-  {orders && orders.map(order=>(
-    <tr>
-   
-         
-         <td>{order.address}</td>
-         <td>{order.total} DH</td>
-         <td>{order.user_id.name}</td>
-         <td>
 
-       
-         <div>
-      {(() => {
-        if (order.liv_id !== null) {
-       
-          return (
-            <div> accepter By : <span className='text-info'> {  order.liv_id.name}</span>
-            </div>
 
-          )
-        } else if (order.liv_id == null) {
-          return (
-            <div className='text-danger'>encore...</div>
-          )
-        } else {
-          return (
-            <div> </div>
-          )
-        }
-      })()}
-    </div>
-    
-         {/* <td>{order.liv_id !== null && (
+
+
+
+
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {orders && orders.map(order => (
+                    
+                    <tr>
+
+                 
+                      <td>{order.address}</td>
+                      <td>{order.total} DH</td>
+                      <td>{order.user_id.name}</td>
+                     
+                      <td>
+
+
+                        <div>
+                          {(() => {
+                            if (order.liv_id !== null) {
+
+                              return (
+                                <div> accepter By : <span className='text-info'> {order.liv_id.name}</span>
+                                </div>
+
+                              )
+                            } else if (order.liv_id == null) {
+                              return (
+                                <div className='text-danger'>encore...</div>
+                              )
+                            } else {
+                              return (
+                                <div> </div>
+                              )
+                            }
+                          })()}
+                        </div>
+
+                        {/* <td>{order.liv_id !== null && (
          <span>delivred</span>
    )}</td>
     <td>{order.liv_id == null && (
@@ -305,64 +342,67 @@ function AdminOrder() {
    )}</td>
          {}
        */}
-         
-
-        
- 
-
-         
-
-       
-      
 
 
-       
-</td>
-
-<td>
-
-{showStatus(order)} 
-
-</td>
 
 
-<td>
-<Link to={'/listfood/'+order._id}  >
-  Show Product {showProduct( order , order._id )}
-  <i className="fa-solid fa-eye"></i>
-</Link>
 
-</td>
 
-         <td>
-         
-            
-              
-            
-       
-         </td>
-         <button className='btn  text-danger' onClick={() => handleDelete(order._id)}>
-               <i class="fa fa-trash"   >  </i>
-         {/* onClick={()=>dispatch(deleteFromCart(food))} */}
-               </button>
- 
-    </tr>
-       ))}
-  </tbody>
-</table>
-            {/*Tabla*/}
-          </main>
 
-    
-      
 
-      
-            
+
+
+
+
+                      </td>
+
+                      <td>
+
+                        {showStatus(order)}
+
+                      </td>
+
+
+                      <td>
+                        <Link to={'/adminorder/' + order._id}  >
+                          {/* Show Product {showProduct(order, order._id)} */}
+                          <i className="fa-solid fa-eye"></i>
+                        </Link>
+
+                      </td>
+
+                      <td>
+
+
+
+
+
+                      </td>
+                      <td>
+                   {  moment(order.createdAt).fromNow() }
+                      </td>
+                      <button className='btn  text-danger' onClick={() => handleDelete(order._id)}>
+                        <i class="fa fa-trash"   >  </i>
+                        {/* onClick={()=>dispatch(deleteFromCart(food))} */}
+                      </button>
+
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {/*Tabla*/}
+            </main>
+
+
+
+
+
+
+          </div>
         </div>
+
+
       </div>
-
-
-    </div>
     </div>
   )
 }

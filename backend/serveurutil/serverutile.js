@@ -24,6 +24,9 @@ const createServer = () =>{
      app.use("/api/foods",require("../routes/foods"));
     app.use("/api/orders",require("../routes/orders"));
     app.use("/api/categories",require("../routes/categories"));
+app.use("/api/braintree",require("../routes/braintree"));
+
+
     return app
 }
 

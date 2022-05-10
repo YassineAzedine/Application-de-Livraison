@@ -1,46 +1,43 @@
-import  {useParams} from 'react-router-dom'
-import React,{useEffect, useState } from 'react'
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from 'react-router-dom';
+const GetOneOrderbyAdmin = props => {
 
-import {useDispatch, useSelector,} from 'react-redux'
-import { getOneorder } from '../actions/orderAction'
-
-
-function GetOneOrderbyAdmin() {
-  
- 
-  
-
-    const orderid = useParams().foodid
+  let navigate = useNavigate();
+  const initialOrderState = {
    
+  };
+  const [currentOrder, setCurrentOrder] = useState(initialOrderState);
+  const [message, setMessage] = useState("");
+  const { id }= useParams();
+  const getOrder =async (id) => {
 
-    const dispatch = useDispatch();
+  await  axios.get('http://localhost:5000/api/orders/admin/allOrders/'+ id)
+      .then(response => {
+      console.log("🚀 ~ file: GetOneOrderbyAdmin.js.js ~ line 20 ~ response", response.oneorder)
 
-    dispatch(getOneorder(orderid))
-    useEffect (()=>{
-      
-  
-
-  
-    console.log("🚀 ~ file: GetOneOrderbyAdmin.js.js ~ line 26 ~ useEffect ~ orderid", orderid)
+        setCurrentOrder(response.data.oneorder);
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+  useEffect(() => {
+    if (id)
+    getOrder(id);
     
-    dispatch(getOneorder(orderid))
-          
-    } , [dispatch,orderid])
-  const {order} = useSelector(state=>state.orders)
+  }, [id]);
 
     
   return (
 
     <div>
 
-      <div className="card text-left">
-        <img className="card-img-top" src="holder.js/100px180/" alt=""/>
-        <div className="card-body">
-          <h4 className="card-title">List des repas</h4>
-          <p className="card-text">Body</p>
-        </div>
-      </div>
+<div class="jumbotron desing">
+            <h1 class="display-3 text-danger "></h1>
+
+          </div>
 
 <div>
   <div className="modal-dialog" role="document">
@@ -55,33 +52,46 @@ function GetOneOrderbyAdmin() {
       <div class="modal-body">
   
       </div>
+      <div >
       <div class="modal-body">
-     Address :    {order.address}
+   
       </div>
       <div class="modal-body">
-     Total :    {order.total}
+     order by :  <strong>{currentOrder.user_id && currentOrder.user_id.name}</strong>  
+      </div>
+      <div class="modal-body">
+     Address :    {currentOrder.address}
+      </div>
       </div>
       <div class="modal-body">
      Les repas selectionné  :
-     {order.orderItems.map((items)=>(
-
-       <div class="card text-left">
-        {/* <img id='stars-hotel'  style={{"height" : "80px", "width" : "140px"}} src={"http://localhost:3000/"+items.image_cover} alt="BigCo Inc. logo"/> */}
-         <div class="card-body">
-           <h4 class="card-title">{items.name}</h4>
-           <p class="card-text">price : {items.price}</p>
-           <p class="card-text">count : {items.count}</p>
-
-         </div>
-       </div>
-
-))}
 
       </div>
-      
+      <div className="list-group">
+          {currentOrder.orderItems &&
+            currentOrder.orderItems.map((order, index) => (
+            
+              <div class="card text-left">
+                {/* <img class="card-img-top" src="holder.js/100px180/" alt=""/> */}
+                <div class="card-body">
+                  <h4 class="card-title">name : {order.name}</h4>
+                  <p class="card-text">prix : {order.price}</p>
+                  <p class="card-text">count : {order.count}</p>
 
+                </div>
+              </div>
+          
 
+            ))}
+        </div>
+ 
 
+        <div class="modal-body">
+     Total :  <strong> {currentOrder.total} DH</strong> 
+      </div>
+      <div class="modal-body">
+     Status :   <strong className="text-warning">{ currentOrder.status }</strong> 
+      </div>
       <form >
       <div className="form-group">
        
@@ -110,3 +120,6 @@ function GetOneOrderbyAdmin() {
 }
 
 export default GetOneOrderbyAdmin
+
+    
+  

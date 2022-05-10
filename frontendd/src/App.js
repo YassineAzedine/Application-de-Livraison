@@ -75,7 +75,7 @@ const App = () => {
        <Route path='/adminorder' element={<AdminOrder/>} /> 
        <Route path='/adminlistuser' element={<AdminListeuser/>} /> 
        <Route path='/livreurOrder' element={<LivreurOrder/>} /> 
-       <Route path='/listfood/:foodid' element={<GetOneOrderbyAdmin/>} /> 
+       <Route path='/adminorder/:id' element={<GetOneOrderbyAdmin/>} /> 
         
 
 

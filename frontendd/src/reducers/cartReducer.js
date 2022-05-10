@@ -21,7 +21,7 @@ export const cartReducer = (state = INITAI_STATE , action) => {
    
             
          case ADD_TO_CART:
-            console.log(state);
+            console.log(state); 
             return {
               
               cart:[...action.payload]
